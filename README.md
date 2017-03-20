@@ -3,7 +3,7 @@ _Paper_ de investigación: _Real-Time Scheduling Algorithms and Battery Consumpt
 > Raquel Elizondo Barrios  
 > Carlos Martin Flores Gonzalez  
 > Jose Daniel Salazar  
-> Oscar Arroyo Rodriguez  
+> Oscar Rodríguez Arroyo
 > Nelson Montero
 
 ### Fechas Importantes
