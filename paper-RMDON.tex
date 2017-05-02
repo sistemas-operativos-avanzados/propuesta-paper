@@ -529,7 +529,6 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{wrapfig}
-\usepackage{epigraph}
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{framed}
@@ -586,9 +585,9 @@ Instituto Tecnológico de Costa Rica, Cartago, Costa Rica\\}
 \vspace{0.1cm}
 \IEEEauthorrefmark{1}\small{\emph{Email}: \textbf{\{}\texttt{rackelelizondo, mfloresg, bimbosalazar, oscar.rodar, n.mendezmontero}\textbf{\}}\texttt{@gmail.com}}
 
-\thanks{This document was proposed as part of the \emph{Advanced Topics in Operative Systems} course at Instituto Tecnológico de Costa Rica. First Semester, 2017.} 
-\thanks{Abstract and References revised on March 20th, 2017.}
-\thanks{First draft revised on May 8th, 2017.}
+\thanks{This document was proposed as part of the \emph{Advanced Topics in Operative Systems} course at Instituto Tecnológico de Costa Rica. First Semester, 2017. Taught by Ph.D Francisco Torres-Rojas \url{http://dl.acm.org/author_page.cfm?id=81100442656}} 
+\thanks{Abstract and References submitted and revised on March 20th, 2017.}
+\thanks{First draft submitted on May 8th, 2017.}
 %\thanks{Abstract and References received March 20, 2017; revised September 17, 2014. 
 %Corresponding author: M. Shell (email: http://www.michaelshell.org/contact.html).}
 }
@@ -698,28 +697,77 @@ In this paper, we present [a set of] [the following] real-time scheduling algori
 
 
 \section{Real-Time Task Scheduling Algorithms}
-Several schemes of classification of real-time task scheduling algorithms exist. A scheme in \cite{mall} classifies the real-time task scheduling algorithms based on how the scheduling points (the points on time line at which the scheduler makes decisions regarding which task is to be run next) are defined. According to this classification scheme, the three main types of schedulers are: clock-driven, event-driven, and hybrid. Important examples of event-driven schedulers are Earliest Deadline First (EDF) and Rate Monotonic analysis (RM). Event-driven schedulers are more sophisticated and usually more proficient and flexible than clock-driven schedulers. These are more proficient because they can feasibly schedule some task sets which clock-driven schedulers can not. These are more flexible because they can feasibly schedule sporadic and aperiodic tasks in addition to periodic tasks, whereas clock-driven schedulers can satisfactorily handle only periodic tasks\cite{mall}. Event-driven scheduling of real-time tasks was a subject of intense research during early 1970s, leading to the publication of a large number of research results, of which the following two popular algorithms are the essence of all EDF and RM\cite{w-s-liu}.
+Several schemes of classification of real-time task scheduling algorithms exist. A scheme in \cite{mall} classifies the real-time task scheduling algorithms based on how the scheduling points (the points on time line at which the scheduler makes decisions regarding which task is to be run next) are defined. According to this classification scheme, the three main types of schedulers are: clock-driven, event-driven, and hybrid. The clock-driven schedulers are those in which the scheduling points are determined by the interrupts received from a clock. In the event-driven ones, the scheduling points are defined by certain events which precludes clock interrupts. The hybrid ones use both clock interrupts as well as event occurrences to define their scheduling points.
+
+
+Important examples of event-driven schedulers are Earliest Deadline First (EDF) and Rate Monotonic analysis (RM). Event-driven schedulers are more sophisticated and usually more proficient and flexible than clock-driven schedulers. These are more proficient because they can feasibly schedule some task sets which clock-driven schedulers can not. These are more flexible because they can feasibly schedule sporadic and aperiodic tasks in addition to periodic tasks, whereas clock-driven schedulers can satisfactorily handle only periodic tasks\cite{mall}. Event-driven scheduling of real-time tasks was a subject of intense research during early 1970s, leading to the publication of a large number of research results, of which the following two popular algorithms are the essence of all EDF and RM\cite{w-s-liu}.
 
 %Several variations to these two basic algorithms exist. 
 
 %We  focus  on  a  preemptive hard real-time systems in which periodic real-time tasks are scheduled with the Earliest-Deadline-First (EDF) algorithm or the Rate-Monotonic (RM) algorithm, the two most widely used real-time system models\cite{w-s-liu}.
 
 \subsection{Earliest Dealine First (EDF)}
-Earliest deadline scheduling is simple in concept. Every process tells the operating system scheduler its absolute time deadline. The scheduling algorithm simply allows the process that is in the greatest danger of missing its deadline to run first. Generally, this means that one process will run to completion if it has an earlier deadline than another. The only time a process would be preempted would be when a new process with an even shorter deadline becomes ready to run. To determine whether all the scheduled processes are capable of having their deadlines met, the following condition must hold:
+Every process tells the operating system scheduler its absolute time deadline. The scheduling algorithm simply allows the process that is in the greatest danger of missing its deadline to run first. Generally, this means that one process will run to completion if it has an earlier deadline than another. The only time a process would be preempted would be when a new process with an even shorter deadline becomes ready to run. To determine whether all the scheduled processes are capable of having their deadlines met, the following condition must hold:
 
 $$\sum_{i = 1}^{n} \frac{C_i}{P_1} \leq 1$$
 
-This simply tells us sum of all the percentages of CPU time used per process has to be less than or equal to 100%. 
+This simply tells us sum of all the percentages of CPU time used per process has to be less than or equal to 100\%. 
 
 \subsection{Rate Monotonic (RM)}
  Rate monotonic analysis is a technique for assigning static priorities to periodic processes. As such, it is not a scheduler but a mechanism for governing the behavior of a preemptive priority scheduler. A conventional priority scheduler is used with this system, where the highest priority ready process will always get scheduled, preempting any lower priority processes.
 
-A scheduler that is aware of rate monotonic scheduling would be provided with process timing parameters (period of execution) when the process is created and compute a suitable priority for the process. Most schedulers that support priority scheduling (e.g., Windows, Linux, Solaris, FreeBSD, NetBSD) do not perform rate monotonic analysis but only allow fixed priorities, so it is up to the user to assign proper priority levels for all real-time processes on the system. To do this properly, the user must be aware of all the real-time processes that will be running at any given time and each process' frequency of execution (1/T, where T is the period). To determine whether all scheduled processes can have their real-time demands met, the system has to also know each process' compute needs per period (C) and check that the following condition holds: 
+A scheduler that is aware of rate monotonic scheduling would be provided with process timing parameters (period of execution) when the process is created and compute a suitable priority for the process. Most schedulers that support priority scheduling (e.g., Windows, Linux, Solaris, FreeBSD, NetBSD) do not perform rate monotonic analysis but only allow fixed priorities, so it is up to the user to assign proper priority levels for all real-time processes on the system. To do this properly, the user must be aware of all the real-time processes that will be running at any given time and each process' frequency of execution ($1/T$, where $T$ is the period). To determine whether all scheduled processes can have their real-time demands met, the system has to also know each process' compute needs per period (C) and check that the following condition holds: 
 
 $$\sum_{i = 1}^{n} \frac{C_i}{P_1} < \ln 2$$
 
+To assign a rate monotonic priority, one simply uses the frequency information for each process. If a process is an aperiodic process, the worst-case (fastest) frequency should be used. The highest frequency (smallest period) process gets the highest priority and successively lower frequency processes get lower priorities.
 
-\section{Soft Real-Time Scheduling}
+Scheduling is performed by a simple priority scheduler. At each quantum, the highest priority ready process gets to run. Processes at the same priority level run round-robin.
+
+\section{DVS Algorithms}
+For hard real-time systems, there are two kinds of voltage scheduling approaches depending on the voltage scaling granularity:  intra-task DVS (IntraDVS) and inter-task DVS (InterDVS). The intra-task DVS algorithms adjust the voltage within an individual task boundary, while the inter-task DVS algorithms determine the voltage on a task-by-task basis at each scheduling point. The main difference between them is whether the slack times are used for the current task or for the tasks that follow.  InterDVS algorithms distribute the slack times from the current task for the following tasks, while IntraDVS algorithms use the slack times from the current task for the current task itself.
+
+\subsection{Intra-task DVS algorithms} 
+In  scheduling hard real-time tasks, in order to guarantee the timing constraint of each task,  the execution times of tasks are usually assumed to be the worst case execution times (WCETs).  However, since a task has many possible execution paths, there are large execution time variations among them. So, when the execution path taken at run time is not the worst case execution path (WCEP), the task may complete its execution before its WCET, resulting in a slack time. In that case, IntraDVS exploits such slack times and adjusts the processor speed. IntraDVS algorithms can be classified into two types depending on how to estimate slack times and how to adjust speeds.
+
+\subsubsection{Path-based method} the voltage and clock speed are determined based on a predicted reference execution path, such as WCEP. For example, when the actual execution deviates from the predicted reference execution path, the clock speed is adjusted.  If the new path takes significantly longer to complete its execution than the reference path, the clock speed is raised to meet the deadline constraint. On the other hand, if the new path can finish its execution earlier than the reference path, the clock speed is lowered to reduce the energy consumption. Program locations for possible speed scaling are identified using static program analysis [16] or execution time profiling [11].
+
+
+\subsubsection{Stochastic method}
+based on the idea that it is better to start the execution at a low speed and accelerate the execution later when needed than to start with a high speed and reduce the speed later when slack time is found. By starting at a low speed, if the task finishes earlier than its WCET, it does not need to execute at a high speed. Theoretically, if the probability density function of execution times of a task is known \emph{a priori}, the optimal speed schedule can be computed [5].  Under the stochastic method, the clock speed is raised at specific time instances, regardless of the execution paths taken. The stochastic IntraDVS may not utilize all the potential slack times.
+
+\subsection{Inter-task DVS algorithms}
+InterDVS algorithms exploit the ``run-calculate-assign-run'' strategy to determine the supply voltage, which can be summarized as follows: (1) run a current task, (2) when the task is completed, calculate the maximum allowable execution time for the next task, (3) assign the supply voltage for the next task, and (4) run the next task.  Most InterDVS algorithms differ during step (2) in computing the maximum allowed time for the next task $\tau$ which is the sum of WCET of $\tau$ and the slack time available for $\tau$.
+
+A generic InterDVS algorithm consists of two parts: slack estimation and slack distribution.  The goal of the slack estimation part is to identify as much slack times as possible while the goal of the slack distribution part is to distribute the resulting slack times so that the resulting speed schedule is as uniform as possible. Slack times generally come from two sources; \emph{static slack times} are the extra times available for the next task that can be identified statically, while {dynamic slack times} are caused from run-time variations of the task executions.
+
+\subsubsection{Slack estimation methods}
+\emph{Static slack estimation Maximum constant speed:} One of the most commonly used static slack estimation methods is to compute the maximum constant speed, which is defined as the lowest possible clock speed that guarantees the feasible schedule of a task set [18].  For example, in EDF scheduling, if the worst case  processor utilization (WCPU) $U$ of a given task set is lower than 1.0 under the maximum speed $f_{max}$, the task set can be scheduled with a new maximum speed $f'_{max} = U \cdot f_{max}$. Although more complicated, the maximum constant speed can be statically calculated as well for RM scheduling [18, 5].
+
+
+\paragraph{Dynamic slack estimation}
+Three  widely-used  techniques  of  estimating  dynamic slack times are briefly described below. 
+
+\emph{Stretching to NTA:} even though a given task set  is scheduled with the maximum constant speed, since the actual execution times of tasks are usually much less than their WCETs, the tasks usually have dynamic slack times.  One simple method to estimate the dynamic slack time is to use the  arrival  time  of  the  next  task   [18]. (The  arrival  time of the next task is denoted by NTA.) Assume that the current task $\tau$ is scheduled at time $t$. If NTA of $\tau$ is later than $(t + \textnormal{WCET}(\tau))$, task $\tau$ can be executed at a lower speed so that its execution completes exactly at the NTA. 
+
+%Figure   1   shows   examples   of   the Stretching-to-NTA method.  When a single task $\tau$ is activated as shown in Figure 1(a), the execution of $\tau$ can be stretched to NTA. When multiple tasks are activated, there can be several alternatives in stretching options.  For example, the dynamic slack time may be given to a single task or distributed equally to all activated tasks.  Cases I and II of Figure 1(b) illustrate these two options, respectively. 
+
+
+\emph{Priority-based slack stealing}: this method exploits the basic  properties of  priority-driven scheduling such as  RM and EDF. The basic idea is that when a higher-priority task completes its execution earlier than its WCET, the following lower-priority tasks  can use the  slack time from the completed higher-priority task.  It is also possible for a higher-priority task to utilize the slack times from completed lower-priority tasks.  However, the latter type of slack stealing is computationally expensive to implement precisely.  Therefore, the existing algorithms are based on heuristics [2, 10].
+
+\emph{Utilization updating:} the actual processor utilization during run time is usually lower than the worst case processor utilization. The utilization updating technique estimates the required processor performance at the current scheduling point by recalculating the expected worst case processor utilization using the actual execution times of completed task instances [14].   When the processor utilization is updated, the clock speed can be adjusted accordingly. The main merit of this method is its simple implementation, since only the processor utilization of completed task instances have to be updated at each scheduling point.
+
+\paragraph{Slack distribution methods} In distributing slack times, most InterDVS algorithms have adopted a greedy approach, where all the slack times are given to the next activated task. This  approach is not an optimal solution, but the greedy approach is widely used because of its simplicity.
+
+
+%\section{Target Algorithms}
+%
+%Table 2 summarizes the DVS algorithms selected for the comparative  study.    Here,  eight  InterDVS  algorithms  are chosen, two [18, 14] of which are based on the RM schedul-
+%ing policy, while the other six algorithms [18, 14, 2, 10] are based on the EDF scheduling policy.   For IntraDVS algorithms, two algorithms are selected, one from path-based IntraDVS algorithms [16], and the other from stochastic methods [5]. In these selected DVS algorithms, one or sometimes more than one slack estimation methods explained in the previous section were used.  In lppsEDF and lppsRM which were proposed by Shin et.  al. in  [18], slack time of a task is estimated using the maximum constant speed and Stretching-to-NTA methods.
+%
+%The ccRM algorithm proposed by Pillai et.   al. [14]  is similar to lppsRM in the sense that it uses both the maximum constant speed and the Stretching-to-NTA methods. However, while lppsRM can adjust the voltage and clock speed only when a single task is active (Figure 1(a)), ccRM extends the stretching to NTA method to the case where multiple tasks are active (Case-II in Figure 1(b)).
+%
+%Pillai et. al. also  proposed  two  other  DVS  algorithms [14], ccEDF and laEDF, for EDF scheduling policy. These algorithms estimate slack time of a task using the utilization updating method. While ccEDF adjusts the voltage and clock speed based on run-time variation in processor utilization alone, laEDF takes a more aggressive approach by estimating the amount of work required to be completed before NTA. DRA and AGR , which were proposed by Aydin et.  al. in [2],  are two representative DVS algorithms that are based on the priority-based slack stealing method. The DRA algorithm estimates the slack time of a task using the priority-based slack stealing method along with the maximum constant speed and the Stretching-to-NTA methods.  Aydin et. al. also extended the DRA algorithm and proposed another DVS algorithm called AGR for more aggressive slack estimation and voltage/clock scaling. In AGR, in addition to the priority-based slack stealing, more slack times are identified by computing the amount of work required to be completed before NTA (Case-I in Figure 1(b)). lpSHE is  another  DVS  algorithm  which  is  based  on the priority-based slack stealing method [10].  Unlike DRA and AGR, lpSHE extends the priority-based slack stealing method by adding a procedure that estimates the slack time from lower-priority tasks that were completed earlier than expected. DRA, AGR,  and lpSHE algorithms  are  somewhat similar to one another in the sense that all of them use the maximum constant speed in the off-line phase and the Stretching-to-NTA method in the on-line phase in addition to the priority-based slack stealing method. For  IntraDVS  algorithms,  Shin’s  intra-task  DVS  algorithm [16] (intraShin) and Gruian’s’ algorithm [5] (intraGruian) are used as representative algorithms of the path-based method and the stochastic method, respectively. (The details of these algorithms were described in Section 2.
 
 
 
@@ -727,7 +775,7 @@ $$\sum_{i = 1}^{n} \frac{C_i}{P_1} < \ln 2$$
 
 \section{Related Work}
 
-\section{Conclusion}
+\section{Conclusions}
 
 
 % To allow for easy dual compilation without having to reenter the
