@@ -691,9 +691,20 @@ Users are craving for longer battery life, some even claim that the next big thi
 
 The energy use of a typical laptop computer, smartphone and a tablet is dominated by the backlight and display, disks and CPU. They use a number of techniques to reduce the energy consumed by the disk and display, primarily by turning them off after a period of no use. Power consumed by the CPU is becoming more significant because of the type of the applications they run now: data-intensive, multimedia, games and collaborative applications that need to be in a constant sync with networks, sensors, and other devices. Dynamic voltage scaling (DVS) is a common mechanism to save CPU energy. It exploits an important characteristic or CMOS\footnote{CMOS: Complementary metal–oxide–semiconductor}-based processors: the maximun frequency scales almost linearly to the voltage, and the energy consumed per cycle is proportional to the square of the voltage. A lower frequency hence enables a lower voltage and yields a quadratic energy reduction\cite{chandrakasan}. The major goal of DVS is to reduce energy by as much as possible without degrading appplication performance. The efectiveness of DVS techniques is, therefore, dependent on the ability to predict application CPU demands -- overestimating them can waste CPU and energy resources, while understimating them can degrade aplication performance\cite{yuan-nahrstedt}.
 
-A real-time operating system has a well-specified maximum time for each action that it performs to support applications with precise timing needs. Systems that can guarantee these maximum times are called hard real-time systems. Those that meet these times most of the time are called soft real-time systems. Deploying an airbag in response to a sensor being actuated is a case where you would want a hard real-time system. Decoding video frames is an example of where a soft real-time system will suffice
+A real-time operating system has a well-specified maximum time for each action that it performs to support applications with precise timing needs. Systems that can guarantee these maximum times are called hard real-time systems. Those that meet these times most of the time are called soft real-time systems. Deploying an airbag in response to a sensor being actuated is a case where you would want a hard real-time system. On-line transaction systems, airline reservation systems and decoding video frames are examples of where a soft real-time system can be used.
 
-In this paper, we present [a set of] [the following] real-time scheduling algorithms  [A, B, C] that have been proposed to improve energy-saving for mobile devices. We discuss their main features 
+In this paper, we present [a set of] [the following] real-time scheduling algorithms  [A, B, C] that have been proposed to improve energy-saving for mobile devices. We discuss their main features
+
+\section{Hard Real-Time versus Soft Real-Time Systems}
+The following are the major differences between hard and soft real-time systems according to \cite{juvva}. 
+\paragraph{Response time requirements} on hard real-time systems are in the order of milliseconds or less and can result in a catastrophe if not met. In contrast, the response time requirements of soft real-time systems are higher and not very strict. 
+
+\paragraph{Peak-load performance} in a hard real-time system, must be predictable and should not violate the predefined deadlines. In a soft real-time system, a degraded operation in a rarely occurring peak load can be tolerated. 
+
+\paragraph{Safety} a hard real-time system must remain synchronous with the state of the environment in all cases. On the other hand soft real-time systems will slow down their response time if the load is very high. Hard real-time systems are often safety critical. 
+
+\paragraph{Size of data files} hard real-time systems have small data files and real-time databases. Temporal accuracy is often the concern here. Soft real-time systems for example, on-line reservation systems have larger databases and require long-term integrity of real-time systems. If an error occurs in a soft real-time system, the computation is rolled back to a previously established checkpoint to initiate a recovery action. In hard real-time systems, roll-back/recovery is of limited use.
+ 
 
 
 \section{Real-Time Task Scheduling Algorithms}
@@ -761,18 +772,7 @@ Three  widely-used  techniques  of  estimating  dynamic slack times are briefly 
 
 
 \section{Representative Algorithms} \label{hard-rt-algs}
-
-%Table 2 summarizes the DVS algorithms selected for the comparative  study.    
-
-Nine  InterDVS  algorithms  are chosen, two of which are based on the RM scheduling policy, while the other seven algorithms are based on the EDF scheduling policy. Two algorithms were selected for IntraDVS, one from path-based IntraDVS algorithms, and the other from stochastic methods. 
-
-
-%In these selected DVS algorithms, one or sometimes more than one slack estimation methods explained in the previous section were used.  
-
-
-%In \texttt{lppsEDF} and \texttt{lppsRM} which were proposed by Shin \emph{et. al.} in  [18], slack time of a task is estimated using the maximum constant speed and Stretching-to-NTA methods. 
-%
-%The \texttt{ccRM} algorithm proposed by Pillai \emph{et. al.} [14]  is similar to \texttt{lppsRM} in the sense that it uses both the maximum constant speed and the Stretching-to-NTA methods. However, while \texttt{lppsRM} can adjust the voltage and clock speed only when a single task is active, \texttt{ccRM} extends the stretching to NTA method to the case where multiple tasks are active.
+Many DVS algorithms have been proposed or developed, especially for hard real-time systems. Since lowering the supply voltage also decreases the maximum achievable clock speed, various DVS algorithms for hard real-time systems have the goal of reducing supply voltage dynamically to the lowest possible level while satisfying the tasks' timing constraints\cite{kim-2}. The following is a representative list of DVS algorithms that have been proposed for addressing energy efficiency on mobile devices: two of which are based on the RM scheduling policy, while the other algorithms are based on the EDF scheduling policy, the two most widely used real-time system models\cite{w-s-liu}. Two algorithms were selected for IntraDVS, one from path-based IntraDVS algorithms, and the other from stochastic methods.
 
 \begin{itemize}
 
@@ -793,6 +793,8 @@ Nine  InterDVS  algorithms  are chosen, two of which are based on the RM schedul
 
 \end{itemize}
 
+\textbf{==> TENTATIVO: hablar de lpfpsEDF que viene en Power Concious...}
+
 Shin's intra-task DVS algorithm \cite{shin-kim-lee} and Gruian's algorithm \cite{gruian} are used as representative IntraDVS algorithms which use path-based method and the stochastic method, respectively.
 
 
@@ -806,7 +808,12 @@ Shin's intra-task DVS algorithm \cite{shin-kim-lee} and Gruian's algorithm \cite
 
 
 \section{Results}
-In \cite{kim-2} a performance comparison of most of the algorithms presented in section \ref{hard-rt-algs} was made using a simulation environment named SimDVS. It is argued that the energy efficiency of InterDVS algorithms depends significantly of slack estimation and the appropriateness of slack distribution. The following highlights the results obtained when evaluating InterDVS algorithms.
+In \cite{kim-2} a performance comparison of most of the algorithms presented in section \ref{hard-rt-algs} was made using a simulation environment named SimDVS. This work is relevant because it is argued that although each DVS algorithm is shown to be quite effective in reducing the energy/power consumption of a target system under its own experimental scenarios, these DVS algorithms have not been quantitatively evaluated under a unified framework, making it a difficult task for low-power embedded system developers to select an appropriate DVS algorithm for a given application/system.
+
+%Although each DVS algorithm is shown to be quite effective in reducing the energy/power consumption of a target system under its own experimental scenarios,  these recent DVS algorithms have not been quantitatively evaluated under a unified framework, making it a difficult task for low-power embedded system developers to select an appropriate DVS  algorithm for  a  given application/system. A quantitative analysis of the energy-efficiency is particularly important because most of these DVS algorithms are based on both static and dynamic slack analysis techniques whose performance is difficult to predict analytically.  In addition, their energy  efficiency  fluctuate  significantly  depending  on  the workload variations, task set characterizations, and execution paths taken, further requiring a quantitative comparison study.
+
+
+%It is argued that the energy efficiency of InterDVS algorithms depends significantly of slack estimation and the appropriateness of slack distribution. The following highlights the results obtained when evaluating InterDVS algorithms.
 
 \paragraph{Impact of the number of task on the energy consumption} as the number of tasks increases,  the  energy  efficiency  of \texttt{lppsEDF}, \texttt{lppsRM}, and \texttt{ccRM} that only use the Stretching-to-NTA technique do not significantly improve, while that of the other more aggressive InterDVS algorithms improves significantly when compared with the energy consumption of an applicacion running on a DVS-unaware system with a power-down mode only. In the Stretching-to-NTA method, the slack time that can be exploited is limited to the time between the completion of a task instance and the arrival time of the next task instance, which is largely independent of the number of tasks in the system. For the other InterDVS algorithms, since the slack times can be taken from any completed task instance, as the number of task increases, each task has more slack sources and can be scheduled with a lowered clock speed.
 
@@ -815,7 +822,7 @@ In \cite{kim-2} a performance comparison of most of the algorithms presented in 
 
 \paragraph{Speed bound} the energy efficiency of \texttt{AGR} and \texttt{lpSEH} is very close to the theoretical lower bound\footnote{Determined by the Yao's algorithm in \cite{yao}} when the speed bound factor is near 0.5. For the aggressive InterDVS algorithms, the energy efficiency is highest when the speed bound factor was set to average case processor utilization (ACPU). When the selected speed bound factor is close to ACPU $(= 0,55 \times \textnormal{WCPU})$, the best energy effciency is achieved for \texttt{laEDF}. For \texttt{ccEDF} this trend does not hold. For RM InterDVS algorithms, the performance gap between the energy efficiency and that of the theoretical lower bound was roughly 35$\sim$40\%.
 
-\textbf{==> Aqui Poner resultados de \texttt{darEDF} <==}
+Regarding the results of \texttt{darEDF} discussed in \cite{zhuo-chakrabarti}, the comparison with competing algorithms such as \texttt{lppsEDF} and \texttt{lpSEH} revelead that \texttt{darEDF} has the best performance both with respect to charge consumption and energy consumption, besides a lower runtime complexity than \texttt{lpSEH} wich has been proven to have close optimal energy saving according to \cite{kim-2}.
 
 \subsection{Performance evaluation of Intra-Task DVS algorithms}
 The two representative IntraDVS algorithms perform quite differently depending on available slack times. When the relative energy consumption ratio of intraGruian over intraShin was measured, if the ratio is larger than 1, intraGruian performs better than intraShin. When  the  slack  ratio  is  less  than  1.2, intraShin outperforms intraGruian because intraShin spends more time in the lower speed region than intraGruian. When the slack ratio is increased, intraGruian spends more time in the lower speed region than intraShin.
@@ -827,13 +834,27 @@ The two representative IntraDVS algorithms perform quite differently depending o
 
 
 \section{Related Work}
-\begin{itemize}
-    \item otros algoritmos para hard-time (lfpsEDF por ejemplo)
-    \item scheduling en mobile devices basado en offloading
-\end{itemize}
+Although this work is focused in hard real-time scheduling algorithms, CPU scheduling and energy/power efficiency of soft real-time systems and mobile devices has been addressed as well. In \cite{yuan-nahrstedt-1} a framework to integrate DVS into soft real-time scheduling for open mobile systems is presented. Its goal is to achieve energy saving DVS while preserinf resource guarantees of soft real-time scheduling. In \cite{yuan-nahrstedt} an enery efficient soft real-time CPU scheduler intended for mobile multimedia systems named \emph{GRACE-OS} is presented.
+
+In \cite{kim-2} hybrid methods are discussed as well. By using this methods researchers try to answer quest of whether hybrid DVS algorithms will perform better than pure InterDVS or pure IntraDVS. The study indicates that the performance of a HybridDVS algorithm can be better than a pure IntraDVS algorithm or a pure InterDVS algorithm. However, the differences in energy efficiency depend on the characteristics of both the IntraDVS and the InterDVS components used in the HybridDVS algorithm.
+
+Another popular technique to reduce energy consumption of mobile devices is computation offloading in which an application reduce energy consumption by delegating code execution to other devices. Traditionally, computations are offloaded to remote servers. Selection of a proper offloading strategy can reduce power consumption and simultaneously enhance performance for mobile device. Following this technique, in \cite{quian-andresen} a computation offloading system for mobile devices named \emph{Jade} is presented. \emph{Jade} implements a multi-level task scheduling algorithm that enables energy and performance-aware task scheduling. It is built for mobile devices running Android operative system and it minimizes energy consumption of mobile devices through fine-grained computation offloading to the cloud. The algorithm (1) incorporates server status, (2) balances the workload between servers, and (3) offloads tasks to the most appropiate server according to the energy and computing demand of the task.
+
+In \cite{kwon-tilevich} another offloading approach that combines the advantages of particioning mobile applications and in dynamically adaptin mobile execution targets in response to fluctuations in network conditions. The proposed approach is realized as the following two technical solutions: (1) a multitarget offloading program transformation that automatically rewrites a centralized program into a distributed program, whose local/remote distribution is determined dynamically at runtime; (2) a runtime system that determines the required local/remote distribution of the resulting distributed program based on the current execution environment. Combining these two solutions can effectively reduce the amount of energy consumed by mobile applications without having to change their source code by hand, thus optimizing them behind the scenes.
+
+
+
+
+%Since in these systems resource demands differs from the ones presented in hard real-time systems, performance improvements are approached depending of the application quality of service (QoS) that is being intended to be improved, for instance disks access, multimedia or network utilization. 
+%
+%\begin{itemize}
+%    \item otros algoritmos para hard-time (lfpsEDF por ejemplo)
+%    \item scheduling en mobile devices basado en offloading
+%\end{itemize}
 
 
 \section{Conclusions}
+In this paper, real-time scheduling principles and algorithms and their impact on mobile device energy/power consumption are discussed.
 
 
 % To allow for easy dual compilation without having to reenter the
@@ -1101,6 +1122,8 @@ The two representative IntraDVS algorithms perform quite differently depending o
 
 \bibitem{moren}D.Moren. \emph{The next big thing in tech ought to be better batteries}. Macworld. August 19, 2016. Available at \url{http://www.macworld.com/article/3109692/hardware/the-next-big-thing-in-tech-ought-to-be-better-batteries.html}
 
+\bibitem{juvva}K.~Juvva. \emph{Real-Time Systems}. Carnegie Mellon University. 18-849b Dependable Embedded Systems. Spring 1998. Available at \url{https://users.ece.cmu.edu/koopman/des_s99/real_time}
+
 \bibitem{kim}W.~Kim, J.~Kim, and S.L.~Min. \emph{A Dynamic Voltage Scaling  Algorithm  for  Dynamic-Priority  Hard  Real-Time  Systems Using Slack Time Analysis}. In Proceedings of Design, Automation and Test in Europe (DATE'02), pages 788–794, March 2002.
 
 \bibitem{kim-2}W.~Kim, J.~Kim, and S.L.~Min \emph{Performance comparison of dynamic voltage scaling algorithms for hard real-time systems}. proc. RTAS. pp 219-228. 2002.
@@ -1137,6 +1160,8 @@ doi: 10.1109/GreenCom-iThings-CPSCom.2013.45
 \bibitem{shin}Y.~Shin, K.~Choi, and  T.~Sakurai. \emph{Power  Optimization  of Real-Time  Embedded  Systems  on  Variable  Speed  Processors}. In Proceedings of the International Conference on Computer-Aided Design, pages 365–368, November 2000.
 
 \bibitem{yao}F.~Yao, A.~Demers, and A.~Shenker. \emph{A Scheduling Model for Reduced CPU Energy}. In Proceedings of the IEEE Foundations of Computer Science, pages 374–382, October 1995.
+
+\bibitem{yuan-nahrstedt-1}W.~Yuan and K.~Nahrstedt, \emph{Integration of Dynamic Voltage Scaling and Soft Real-Time Scheduling for Open Mobile Systems}, In Proceedings of the 12th international workshop on Network and operating systems support for digital audio and video (NOSSDAV '02). ACM, New York, NY, USA, 105-114. 2002.
 
 \bibitem{yuan-nahrstedt}W.~Yuan and K.~Nahrstedt, \emph{Energy-efficient soft real-time CPU scheduling for mobile multimedia systems},  ACM SIGOPS Operating Systems Review, Volume 37, Pages 149-163, 2003.
 
