@@ -579,15 +579,16 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 % received ..."  text while in non-compsoc journals this is reversed. Sigh.
 
 
-\author{\IEEEauthorblockN{Raquel Elizondo\IEEEauthorrefmark{1}, Martín Flores\IEEEauthorrefmark{1}, Jose Salazar\IEEEauthorrefmark{1}, Oscar Rodríguez\IEEEauthorrefmark{1} and Nelson Méndez\IEEEauthorrefmark{1}\\}
+\author{\IEEEauthorblockN{Raquel Elizondo\IEEEauthorrefmark{1}, Martín Flores\IEEEauthorrefmark{1}, Oscar Rodríguez\IEEEauthorrefmark{1} and Nelson Méndez\IEEEauthorrefmark{1}\\}
 \IEEEauthorblockA{School of Computer Science\\
 Instituto Tecnológico de Costa Rica, Cartago, Costa Rica\\}
 \vspace{0.1cm}
-\IEEEauthorrefmark{1}\small{\emph{Email}: \textbf{\{}\texttt{rackelelizondo, mfloresg, bimbosalazar, oscar.rodar, n.mendezmontero}\textbf{\}}\texttt{@gmail.com}}
+\IEEEauthorrefmark{1}\small{\emph{Email}: \textbf{\{}\texttt{rackelelizondo, mfloresg, oscar.rodar, n.mendezmontero}\textbf{\}}\texttt{@gmail.com}}
 
 \thanks{This document was proposed as part of the \emph{Advanced Topics in Operative Systems} course at Instituto Tecnológico de Costa Rica. First Semester, 2017. Taught by Ph.D Francisco Torres-Rojas \url{http://dl.acm.org/author_page.cfm?id=81100442656}} 
 \thanks{Abstract and References submitted and revised on March 20th, 2017.}
 \thanks{First draft submitted on May 8th, 2017.}
+\thanks{Final version submitted on May 29th, 2017.}
 %\thanks{Abstract and References received March 20, 2017; revised September 17, 2014. 
 %Corresponding author: M. Shell (email: http://www.michaelshell.org/contact.html).}
 }
@@ -715,7 +716,7 @@ Important examples of event-driven schedulers are Earliest Deadline First (EDF) 
 \subsection{Earliest Dealine First (EDF)}
 Every process tells the operating system scheduler its absolute time deadline. The scheduling algorithm simply allows the process that is in the greatest danger of missing its deadline to run first. Generally, this means that one process will run to completion if it has an earlier deadline than another. The only time a process would be preempted would be when a new process with an even shorter deadline becomes ready to run. To determine whether all the scheduled processes are capable of having their deadlines met, the following condition must hold:
 
-$$\sum_{i = 1}^{n} \frac{C_i}{P_1} \leq 1$$
+$$\sum_{i = 1}^{n} \frac{C_i}{P_i} \leq 1$$
 
 This simply tells us sum of all the percentages of CPU time used per process has to be less than or equal to 100\%. 
 
@@ -724,7 +725,7 @@ This simply tells us sum of all the percentages of CPU time used per process has
 
 A scheduler that is aware of rate monotonic scheduling would be provided with process timing parameters (period of execution) when the process is created and compute a suitable priority for the process. Most schedulers that support priority scheduling (e.g., Windows, Linux, Solaris, FreeBSD, NetBSD) do not perform rate monotonic analysis but only allow fixed priorities, so it is up to the user to assign proper priority levels for all real-time processes on the system. To do this properly, the user must be aware of all the real-time processes that will be running at any given time and each process' frequency of execution ($1/T$, where $T$ is the period). To determine whether all scheduled processes can have their real-time demands met, the system has to also know each process' compute needs per period (C) and check that the following condition holds: 
 
-$$\sum_{i = 1}^{n} \frac{C_i}{P_1} < \ln 2$$
+$$\sum_{i = 1}^{n} \frac{C_i}{P_i} < \ln 2$$
 
 To assign a rate monotonic priority, one simply uses the frequency information for each process. If a process is an aperiodic process, the worst-case (fastest) frequency should be used. The highest frequency (smallest period) process gets the highest priority and successively lower frequency processes get lower priorities.
 
